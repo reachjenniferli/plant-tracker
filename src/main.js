@@ -1,6 +1,6 @@
-import "../style.css"
+import "./style.css";
 
-const app = document.getElementById("app")
-
-app.innerHTML = `<div>Hello World!</div>`
-//find <div id="app"></div> and put Hello World! inside it
+const app = document.getElementById("app");
+app.innerHTML = `<div class="flex items-center justify-center h-screen">
+  <div>Hello orld!</div>
+</div>`;
