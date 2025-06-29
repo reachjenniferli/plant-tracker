@@ -13,79 +13,63 @@
       <h1 class="font-sans text-7xl text-green-700">⚘ plant tracker ⚘</h1>
     </header>
 
-    <nav
-      id="todo-nav"
-      class="flex items-center justify-center gap-3 py-2 filters"
-      role="navigation"
-    >
+    <nav id="plant-nav" class="flex items-center justify-center gap-3 py-2 filters" role="navigation">
 
-      <a
-        href="#/"
-        class="p-1 underline underline-offset-4 decoration-rose-800 decoration-2"
-        role="button"
-        >All
-      </a
-      >
+      <a href="#/" class="p-1 underline underline-offset-4 decoration-rose-800 decoration-2" role="button">All</a>
 
-      <a
-        href="#/active"
-        class="p-1"
-        role="button"
-        >Active</a
-      >
+      <a href="#/thirsty" class="p-1" role="button">Thirsty</a>
 
-      <a
-        href="#/completed"
-        class="p-1"
-        role="button"
-        >Completed</a
-      >
+      <a href="#/watered" class="p-1" role="button">Watered</a>
   
     </nav>
 
     <main class="max-w-lg mx-auto font-thin bg-white divide-y shadow-md">
 
-      <input
-        id="new-todo"
-        placeholder="Add a new plant..."
-        autofocus
-        class="w-full p-4 text-2xl italic outline-none focus:outline-offset-0 focus:outline-green-700"
-      />
+      <input id="new-plant" placeholder="Add a new plant..." autofocus class="w-full p-4 text-2xl italic outline-none focus:outline-offset-0 focus:outline-green-700"/>
 
-      <section
-        id="todo-list"
-        class="flex flex-col w-full text-xl font-normal divide-y"
-      >
-        <div class="p-4 todo-item">
-          <div class="todo-text">Buy milk</div>
-          <input class="hidden todo-edit" value="Buy milk" />
-        </div>
-        <div class="p-4 todo-item">
-          <div class="todo-text">Buy bread</div>
-          <input class="hidden todo-edit" value="Buy bread" />
-        </div>
+      <section id="plant-list" class="flex flex-col w-full text-xl font-normal divide-y"></section>
 
-      </section>
+      <section id="plant-actions" class="flex justify-between p-4 text-sm text-gray-600">
+        <span id="plant-count">0 items left</span>
 
-      <section
-        id="todo-actions"
-        class="flex justify-between p-4 text-sm text-gray-600"
-      >
-        <span id="todo-count">2 items left</span>
-        <button id="mark-all-completed" aria-label="Mark all tasks as completed">
-          Mark all as complete
+        <button id="mark-all-watered" aria-label="Mark all plants as watered">
+          Mark all as watered
         </button>
+
         <button id="clear-completed" aria-label="Clear completed tasks">
           Clear completed
         </button>
+
       </section>
 
     </main>
 
+
     <footer class="flex flex-col items-center justify-center max-w-lg mx-auto mt-10 text-xs text-gray-500 font-extralight">
-      <div>Click to complete a todo</div>
-      <div>Double-click to edit a todo</div>
+      <div>Click to complete a plant</div>
+      <div>Double-click to edit a plant</div>
     </footer>
+
+    <div id="popup-modal" class="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm hidden z-50">
+      <div class="bg-white p-6 rounded-xl shadow-lg max-w-md w-full space-y-4">
+      
+        <h2 id="popup-title" class="text-2xl font-semibold text-green-800"></h2>
+
+        <input id="popup-watering" placeholder="Recommended watering (e.g. Every 3 days)" class="w-full p-3 border rounded-lg text-lg outline-none"/>
+
+        <div class="flex justify-end gap-3">
+
+          <button id="cancel-popup" class="px-4 py-2 text-gray-700 hover:underline">
+            Cancel
+          </button>
+
+          <button id="confirm-popup" class="px-4 py-2 text-white bg-green-700 rounded hover:bg-green-800">
+            Add Plant
+          </button>
+
+        </div>
+      </div>
+    </div>
     
     <script type="module" src="/src/main.js"></script>
   </body>
