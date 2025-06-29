@@ -10,7 +10,7 @@
   <body class="bg-stone-100">
     
     <header class="max-w-lg py-4 mx-auto mt-5 font-thin text-center">
-      <h1 class="font-sans text-7xl text-green-700">⚘ plant tracker ⚘</h1>
+      <h1 class="font-sans text-green-700 text-7xl">⚘ plant tracker ⚘</h1>
     </header>
 
     <nav id="plant-nav" class="flex items-center justify-center gap-3 py-2 filters" role="navigation">
@@ -50,12 +50,13 @@
       <div>Double-click to edit a plant</div>
     </footer>
 
-    <div id="popup-modal" class="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm hidden z-50">
-      <div class="bg-white p-6 rounded-xl shadow-lg max-w-md w-full space-y-4">
+    <div id="popup-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black/50 backdrop-blur-sm">
+      <div class="w-full max-w-md p-6 space-y-4 bg-white shadow-lg rounded-xl">
       
         <h2 id="popup-title" class="text-2xl font-semibold text-green-800"></h2>
 
-        <input id="popup-watering" placeholder="Recommended watering (e.g. Every 3 days)" class="w-full p-3 border rounded-lg text-lg outline-none"/>
+        <input id="popup-watering" type="number" min="1" class="w-full p-3 text-lg border rounded-lg outline-none"/>
+        <input id="popup-last-watered" type="date" min="1" class="w-full p-3 text-lg border rounded-lg outline-none"/>
 
         <div class="flex justify-end gap-3">
 

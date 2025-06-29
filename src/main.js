@@ -8,36 +8,51 @@ const popupCancel = document.getElementById("cancel-popup");
 const popupConfirm = document.getElementById("confirm-popup");
 const markAllWatered = document.getElementById("mark-all-watered");
 const clearThirsty = document.getElementById("clear-thirsty");
-const activeplantsCount = document.getElementById("plant-count");
+const activePlantsCount = document.getElementById("plant-count");
+let popupPlantName = ""; 
 
 // Helper function to create a new array with the existing plants and a new plant item
-const addPlant = (plants, newPlantText, newPlantId) => [
+const addPlant = (plants, newPlantText, newPlantId, watering, last) => [
   ...plants,
   { id: newPlantId, 
     text: newPlantText, 
     thirsty: false, 
-    recommendedWatering: "every" + "days",
-    lastWatered: daysSince(new Date()) + " days ago",
+    recommendedWatering: "every " + watering + " days",
+    lastWatered: daysSince(last) + " days ago",
   }
 ];
 
-const showPopUp = (plantName) => {
-  document.getElementById("popup-title").textContent = `Add ${plantName} Details`;
+const showPopUp = (newPlantText) => {
+
+  popupPlantName = newPlantText;
+
+  document.getElementById("popup-title").textContent = `Add ${newPlantText} Details`;
 
   document.getElementById("popup-watering").value = "";
 
   document.getElementById("popup-modal").classList.remove("hidden");
   document.getElementById("popup-watering").focus();
+
 };
 
-const handleCancelPopUp = () => {
-  document.getElementById("popup-modal").classList.add("hidden");
-  document.getElementById("popup-watering").value = "";
+const newPlant = () => {
+  const wateringValue = document.getElementById("popup-watering").value.trim();
+  let lastWateredValue = document.getElementById("popup-last-watered").value.trim();
+
+  if (!lastWateredValue) {
+    lastWateredValue = new Date().toISOString(); // Default to today if no date is provided
+  }
+
+  plantApp.addPlant(popupPlantName, wateringValue, lastWateredValue);
+  hidePopUp();
+  renderPlants();
+
 }
 
 const hidePopUp = () => {
   document.getElementById("popup-modal").classList.add("hidden");
-};
+  document.getElementById("popup-watering").value = "";
+}
 
 const daysSince = (date) => {
   const today = new Date();
@@ -47,13 +62,13 @@ const daysSince = (date) => {
 };
 
 // Helper function to toggle the Thirsty status of a plant item
-const toggleplant = (plants, plantId) =>
+const togglePlant = (plants, plantId) =>
   plants.map((plant) =>
     plant.id === plantId ? { ...plant, Thirsty: !plant.Thirsty } : plant,
   );
 
 // Helper function to filter plants based on the current filter setting
-const filterplants = (plants, filter) => {
+const filterPlants = (plants, filter) => {
   switch (filter) {
     case "all":
       return [...plants];
@@ -84,8 +99,8 @@ const createPlantApp = () => {
   let filter = "all"; // can be 'all', 'active', or 'Thirsty'
 
   return {
-    addPlant: (newPlantText) => {
-      plants = addPlant(plants, newPlantText, nextPlantId++);
+    addPlant: (newPlantText, watering, last) => {
+      plants = addPlant(plants, newPlantText, nextPlantId++, watering, last);
     },
     togglePlant: (plantId) => {
       plants = togglePlant(plants, plantId);
@@ -100,7 +115,7 @@ const createPlantApp = () => {
       plants = deleteThirstyPlants(plants);
     },
     getNumberOfActivePlants: () =>
-      plants.reduce((acc, plant) => acc + !plant.Thirsty, 0),
+      plants.reduce((acc, plant) => acc + plant.thirsty, 0),
     getPlants: () => filterPlants(plants, filter),
   };
 };
@@ -139,7 +154,7 @@ const createPlantItem = (plant) => {
   // "Recommended" display
   const recommended = document.createElement("div");
   recommended.classList.add("text-sm", "text-gray-400", "mt-1");
-  recommended.innerText = `Last watered: ${plant.recommendedWatering}`;
+  recommended.innerText = `Recommended watering: ${plant.recommendedWatering}`;
 
   // "Last Watered" display
   const watered = document.createElement("div");
@@ -155,7 +170,7 @@ const createPlantItem = (plant) => {
 const renderPlants = () => {
   plantListElement.innerHTML = ""; // Clear the current list to avoid duplicates
 
-  const plantElements = plantApp.getPlants().map(createplantItem);
+  const plantElements = plantApp.getPlants().map(createPlantItem);
   plantListElement.append(...plantElements);
 
   activePlantsCount.innerText = `${plantApp.getNumberOfActivePlants()} item${plantApp.getNumberOfActivePlants() === 1 ? "" : "s"} left`;
@@ -167,10 +182,10 @@ const handleKeyDownToCreateNewPlant = (event) => {
     const plantText = event.target.value.trim();
   
     if (plantText) {
-      showPopUp(plantText);
+      
+      showPopUp(plantText); // Default watering value
       event.preventDefault();
       event.target.value = ""; // Clear the input
-      renderPlants();
     }
   }
 };
@@ -237,8 +252,8 @@ const clearThirstyPlants = () => {
 plantListElement.addEventListener("click", handleClickOnPlantList);
 inputNewPlant.addEventListener("keydown", handleKeyDownToCreateNewPlant);
 plantNav.addEventListener("click", handleClickOnNavbar);
-popupCancel.addEventListener("click", handleCancelPopUp);
-popupConfirm.addEventListener("click", createPlantItem);
+popupCancel.addEventListener("click", hidePopUp);
+popupConfirm.addEventListener("click", newPlant);
 markAllWatered.addEventListener("click", handleMarkAllWatered);
 clearThirsty.addEventListener("click", clearThirstyPlants); //delete selected plants
 document.addEventListener("DOMContentLoaded", renderPlants);
