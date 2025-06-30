@@ -15,8 +15,8 @@ let popupPlantName = "";
 const addPlant = (plants, newPlantText, newPlantId, watering, last) => [
   ...plants,
   { id: newPlantId, 
-    text: newPlantText, 
-    thirsty: false, 
+    text: newPlantText,
+    thirsty: (daysSince(last) >= Number(watering)), 
     recommendedWatering: "every " + watering + " days",
     lastWatered: daysSince(last) + " days ago",
   }
@@ -26,7 +26,7 @@ const showPopUp = (newPlantText) => {
 
   popupPlantName = newPlantText;
 
-  document.getElementById("popup-title").textContent = `Add ${newPlantText} Details`;
+  document.getElementById("popup-title").textContent = `Add ${newPlantText} details`;
 
   document.getElementById("popup-watering").value = "";
 
@@ -52,6 +52,7 @@ const newPlant = () => {
 const hidePopUp = () => {
   document.getElementById("popup-modal").classList.add("hidden");
   document.getElementById("popup-watering").value = "";
+  document.getElementById("popup-last-watered").value = "";
 }
 
 const daysSince = (date) => {
@@ -64,7 +65,7 @@ const daysSince = (date) => {
 // Helper function to toggle the Thirsty status of a plant item
 const togglePlant = (plants, plantId) =>
   plants.map((plant) =>
-    plant.id === plantId ? { ...plant, Thirsty: !plant.Thirsty } : plant,
+    plant.id === plantId ? { ...plant, thirsty: false, lastWatered: daysSince(new Date) + " days ago"} : plant,
   );
 
 // Helper function to filter plants based on the current filter setting
@@ -82,13 +83,13 @@ const filterPlants = (plants, filter) => {
 // Helper function to mark all plants as watered
 const markAllPlantsWatered = (plants) => {
   return plants.map((plant) => {
-    return { ...plant, Thirsty: true };
+    return { ...plant, thirsty: false };
   });
 };
 
 // Helper function to delete all Thirsty plants
 const deleteThirstyPlants = (plants) => {
-  return plants.filter((plant) => !plant.Thirsty);
+  return plants.filter((plant) => !plant.thirsty);
 };
 
 // Factory function to create a plant app
@@ -104,7 +105,7 @@ const createPlantApp = () => {
     },
     togglePlant: (plantId) => {
       plants = togglePlant(plants, plantId);
-    },
+    }, 
     setFilter: (newFilter) => {
       filter = newFilter;
     },
@@ -128,7 +129,7 @@ const createPlantText = (plant) => {
   plantText.id = `plant-text-${plant.id}`;
   plantText.classList.add(
     "plant-text",
-    ...(plant.Thirsty ? ["line-through"] : []),
+    ...(plant.thirsty ? [] : []),
   );
   plantText.innerText = plant.text;
   return plantText;
@@ -151,6 +152,22 @@ const createPlantItem = (plant) => {
   const text = createPlantText(plant);
   const edit = createPlantEditInput(plant);
 
+  // Create image element for icon
+  const iconImg = document.createElement("img");
+  iconImg.src = plant.thirsty ? "/todo-app/dead-plant.png" : "/todo-app/live-plant.png";
+  iconImg.alt = plant.thirsty ? "Thirsty plant" : "Watered plant";
+  iconImg.style.width = "14px";  // adjust size as needed
+  iconImg.style.height = "14px";
+  iconImg.style.marginLeft = "8px";
+  iconImg.style.verticalAlign = "middle";
+
+  // Wrap plant text and icon in a container
+  const textContainer = document.createElement("div");
+  textContainer.style.display = "inline-flex";
+  textContainer.style.alignItems = "center";
+  textContainer.appendChild(text);
+  textContainer.appendChild(iconImg);
+
   // "Recommended" display
   const recommended = document.createElement("div");
   recommended.classList.add("text-sm", "text-gray-400", "mt-1");
@@ -161,7 +178,7 @@ const createPlantItem = (plant) => {
   watered.classList.add("text-sm", "text-gray-400", "mt-1");
   watered.innerText = `Last watered: ${plant.lastWatered}`;
 
-  plantItem.append(text, recommended, watered, edit);
+  plantItem.append(textContainer, recommended, watered, edit);
   return plantItem;
 };
 
