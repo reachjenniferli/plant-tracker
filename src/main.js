@@ -152,22 +152,24 @@ const createPlantItem = (plant) => {
   const text = createPlantText(plant);
   const edit = createPlantEditInput(plant);
 
-  // Create image element for icon
-  const iconImg = document.createElement("img");
-  iconImg.src = plant.thirsty ? "/todo-app/dead-plant.png" : "/todo-app/live-plant.png";
-  iconImg.alt = plant.thirsty ? "Thirsty plant" : "Watered plant";
-  iconImg.style.width = "14px";  // adjust size as needed
-  iconImg.style.height = "14px";
-  iconImg.style.marginLeft = "8px";
-  iconImg.style.verticalAlign = "middle";
-
   // Wrap plant text and icon in a container
   const textContainer = document.createElement("div");
   textContainer.style.display = "inline-flex";
   textContainer.style.alignItems = "center";
   textContainer.appendChild(text);
-  textContainer.appendChild(iconImg);
 
+  if (plant.thirsty) {
+    // Create image element for icon
+    const iconImg = document.createElement("img");
+    iconImg.src = "plant-tracker/watering-can.svg";
+    iconImg.alt = "Thirsty plant";
+    iconImg.style.width = "14px";  // adjust size as needed
+    iconImg.style.height = "14px";
+    iconImg.style.marginLeft = "8px";
+    iconImg.style.verticalAlign = "middle";
+    textContainer.appendChild(iconImg);
+  }
+    
   // "Recommended" display
   const recommended = document.createElement("div");
   recommended.classList.add("text-sm", "text-gray-400", "mt-1");
