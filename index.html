@@ -14,30 +14,22 @@
     </header>
 
     <nav id="plant-nav" class="flex items-center justify-center gap-3 py-2 font-mono filters" role="navigation">
-
       <a href="#/" class="p-1 underline underline-offset-4 decoration-rose-800 decoration-2" role="button">All</a>
-
       <a href="#/thirsty" class="p-1" role="button">Thirsty</a>
-
       <a href="#/watered" class="p-1" role="button">Watered</a>
-  
     </nav>
 
     <main class="max-w-lg mx-auto font-mono bg-white divide-y shadow-md">
 
-      <input id="new-plant" placeholder="Add a new plant..." autofocus class="w-full p-4 text-2xl italic outline-none focus:outline-offset-0 focus:outline-green-700"/>
+      <input id="new-plant" placeholder="Add a new plant..." autofocus class="w-full p-4 text-2xl italic outline-none focus:outline-offset-0" />
 
       <section id="plant-list" class="flex flex-col w-full font-mono text-xl divide-y"></section>
 
       <section id="plant-actions" class="flex justify-between p-4 text-sm text-gray-600">
-        <span id="plant-count">0 items left</span>
+        <span id="plant-count">0 plants to water</span>
 
         <button id="mark-all-watered" aria-label="Mark all plants as watered">
           Mark all as watered
-        </button>
-
-        <button id="clear-completed" aria-label="Clear completed tasks">
-          Clear completed
         </button>
 
       </section>
@@ -46,7 +38,7 @@
 
 
     <footer class="flex flex-col items-center justify-center max-w-lg mx-auto mt-10 font-mono text-xs text-gray-500">
-      <div>Click to complete a plant</div>
+      <div>Click the watering can to mark a plant as watered</div>
       <div>Double-click to edit a plant</div>
 
     </footer>
@@ -62,7 +54,7 @@
         <input id="popup-watering" type="number" min="1" class="w-full p-3 font-mono text-lg border rounded-lg outline-none"/>
 
         <label for="popup-last-watered" class="block mb-1 font-mono text-gray-700">
-          Last watered
+          Last watered (optional)
         </label>
         <input id="popup-last-watered" type="date" min="1" class="w-full p-3 font-mono text-lg border rounded-lg outline-none"/>
 
