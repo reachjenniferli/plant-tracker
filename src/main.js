@@ -172,7 +172,7 @@ const createWateringCan = (plant) => {
   const iconImg = document.createElement("img");
   iconImg.classList.add("watering-can-icon");
   iconImg.setAttribute("data-id", plant.id);
-  iconImg.src = "plant-tracker/watering-can.png";
+  iconImg.src = "./watering-can.png";
   iconImg.alt = "Thirsty plant";
   iconImg.style.width = "24px";
   iconImg.style.height = "24px";
@@ -186,7 +186,7 @@ const createWateringCan = (plant) => {
 const createTrashCan = (plant) => {
   const deleteBtn = document.createElement("img");
   deleteBtn.classList.add("trash-can-icon");
-  deleteBtn.src = "plant-tracker/trash-can.png";
+  deleteBtn.src = "./trash-can.png";
   deleteBtn.style.width = "20px";
   deleteBtn.style.height = "20px";
   deleteBtn.style.marginLeft = "8px";
@@ -225,7 +225,7 @@ const createPlantItem = (plant) => {
     const iconWateringCan = createWateringCan(plant);
     textContainer.appendChild(iconWateringCan);
   }
-  
+
   // "Recommended" display
   const recommended = document.createElement("div");
   recommended.classList.add("text-sm", "text-gray-400", "mt-1");
